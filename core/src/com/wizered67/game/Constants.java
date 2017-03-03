@@ -15,7 +15,7 @@ public class Constants {
 	public final static boolean DEBUG = false;
 
 	//Game Settings
-	public final static String GAME_NAME = "Visual Novel";
+	public final static String GAME_NAME = "Alice Wonder: Presidential Prodigy";
 	public final static int DEFAULT_WIDTH = 800; //1920
 	public final static int DEFAULT_HEIGHT = 600; //1080
 	public final static boolean FULLSCREEN = false;

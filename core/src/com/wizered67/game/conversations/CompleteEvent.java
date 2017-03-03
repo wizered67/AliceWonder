@@ -27,6 +27,8 @@ public class CompleteEvent {
     /** A CompleteEvent for when a position interpolation ends. */
     private static final CompleteEvent POSITION_INTERPOLATION_END_EVENT = new CompleteEvent(Type.POSITION_INTERPOLATION);
 
+    private static final CompleteEvent PRESENT_EVENT = new CompleteEvent(Type.PRESENT);
+
     public CompleteEvent(Type t) {
         this(t, null);
     }
@@ -63,7 +65,12 @@ public class CompleteEvent {
         return POSITION_INTERPOLATION_END_EVENT;
     }
 
+    public static CompleteEvent present(int id) {
+        PRESENT_EVENT.data = id;
+        return PRESENT_EVENT;
+    }
+
     public enum Type {
-        INPUT, CHOICE, ANIMATION_END, FADE_END, TEXT, POSITION_INTERPOLATION
+        INPUT, CHOICE, ANIMATION_END, FADE_END, TEXT, POSITION_INTERPOLATION, PRESENT
     }
 }

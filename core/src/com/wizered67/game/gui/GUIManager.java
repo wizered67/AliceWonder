@@ -3,6 +3,7 @@ package com.wizered67.game.gui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -18,12 +20,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.StringBuilder;
+import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.widget.LinkLabel;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 import com.wizered67.game.Constants;
+import com.wizered67.game.Evidence;
 import com.wizered67.game.GameManager;
+import com.wizered67.game.conversations.CompleteEvent;
 import com.wizered67.game.conversations.Conversation;
 import com.wizered67.game.conversations.ConversationController;
 import com.wizered67.game.conversations.Transcript;
@@ -75,6 +82,21 @@ public class GUIManager {
     /** Whether the transcript is scrolling, and in which direction. */
     private static float transcriptScrolling = 0;
 
+    static Table evidenceTable;
+
+    static Table column;
+    static Table main;
+    static int listTypeIndex = 0;
+    static List<String> list;
+    static Array<Evidence>[] allEvidence = new Array[2];
+    static Button presentButton;
+    static Evidence currentEvidence;
+    static TextButton backButton;
+    static TextButton evidenceButton;
+    static Label descriptionLabel;
+    static LinkLabel infoLabel;
+    static Sound clickSound;
+
     /** Initializes all of the GUI elements and adds them to the Stage ST. Also
      * initializes ConversationController with the elements it will update.
      */
@@ -108,7 +130,7 @@ public class GUIManager {
     	 dialogueElementsTable = new Table();
     	 dialogueElementsTable.setFillParent(true);
     	 stage.addActor(dialogueElementsTable);
-	     dialogueElementsTable.setDebug(Constants.DEBUG); // This is optional, but enables debug lines for tables.
+	     //dialogueElementsTable.setDebug(Constants.DEBUG); // This is optional, but enables debug lines for tables.
     	    // Add widgets to the table here.
 	     
 	     TextButtonStyle textButtonStyle = new TextButtonStyle();
@@ -119,7 +141,7 @@ public class GUIManager {
 			textButtonStyle.font = skin.getFont("default");
 			skin.add("default", textButtonStyle);
         Table choiceTable = new Table();
-        choiceTable.setDebug(Constants.DEBUG);
+        //choiceTable.setDebug(Constants.DEBUG);
         dialogueElementsTable.add(choiceTable).top().grow();//.expand().fill();
         dialogueElementsTable.row();
         choiceButtons = new TextButton[4];
@@ -263,6 +285,17 @@ public class GUIManager {
             }
             //transcriptPane.setScrollY(transcriptPane.getScrollY() + transcriptScrolling);
         }
+        if (main.isVisible()) {
+            for (TextButton button : choiceButtons) {
+                button.setVisible(false);
+            }
+        } else {
+            if (conversationController.isChoiceShowing()) {
+                for (TextButton button : choiceButtons) {
+                    button.setVisible(button.getText() != null && !button.getText().toString().isEmpty());
+                }
+            }
+        }
         updateTranscript(); //todo remove, only do so when transcript is visible
 	}
 	/** Toggles whether the transcript is being shown. */
@@ -356,6 +389,196 @@ public class GUIManager {
         transcriptScrolling = 0;
         transcriptPane.setVelocityY(0);
     }
+
+    private static void initEvidence() {
+        allEvidence[0] = new Array<>(true, 10);
+        allEvidence[1] = new Array<>(true, 6);
+        allEvidence[0].add(new Evidence("First Amendment",
+                "The Federal government, as well as the states, may not infringe on the people’s rights to press, free speech, assembly, petition, and to practice any religion.", 2,
+                "https://en.wikipedia.org/wiki/First_Amendment_to_the_United_States_Constitution" ));
+
+        allEvidence[0].add(new Evidence("Second Amendment",
+                "People have the right to keep a weapon and use it to protect themselves.", 0,
+                "https://en.wikipedia.org/wiki/Second_Amendment_to_the_United_States_Constitution"));
+        allEvidence[0].add(new Evidence("Third Amendment", "Soldiers can not stay in people’s houses' without their consent.", 9, "https://en.wikipedia.org/wiki/Third_Amendment_to_the_United_States_Constitution"));
+        allEvidence[0].add(new Evidence("Fourth Amendment",
+                "The government cannot arrest a person, or search their property, unless there is \"probable cause\" that a crime has been committed.", 10, "https://en.wikipedia.org/wiki/Fourth_Amendment_to_the_United_States_Constitution"));
+        allEvidence[0].add(new Evidence("Fifth Amendment",
+                "The Federal government must follow the due process of the law before punishing a person and that all citizens had the right to a trial by jury. It also states that a person cannot be put on trial twice for the same crime (the Double Jeopardy Clause) or that person on trial for a crime does not have to testify against themselves in court, known as \"Pleading the 5th\".",
+                9, "https://en.wikipedia.org/wiki/Fifth_Amendment_to_the_United_States_Constitution"));
+        allEvidence[0].add(new Evidence("Sixth Amendment", "A person has the right to be told what crimes they are charged with, have a speedy and fair trial by a jury, to have a lawyer during the trial and the right to question witnesses against them and have the right to get their own witnesses to testify for them.", 9, "https://en.wikipedia.org/wiki/Sixth_Amendment_to_the_United_States_Constitution"));
+        allEvidence[0].add(new Evidence("Seventh Amendment", "People who are sued have to a jury trial for civil cases. ", 9, "https://en.wikipedia.org/wiki/Seventh_Amendment_to_the_United_States_Constitution"));
+        allEvidence[0].add(new Evidence("Eighth Amendment", "The government cannot demand excessive bail, excessive fines, or inflict any cruel and unusual punishment.", 1, "https://en.wikipedia.org/wiki/Eighth_Amendment_to_the_United_States_Constitution"));
+        allEvidence[0].add(new Evidence("Ninth Amendment", "The Constitution does not include all of the rights of the people and the states. It provides reassurance that rights not listed could not be taken away and that the adoption of Constitution itself, and its construction, would limit the powers of government.", 9, "https://en.wikipedia.org/wiki/Ninth_Amendment_to_the_United_States_Constitution"));
+        allEvidence[0].add(new Evidence("Tenth Amendment", "Any powers that the Constitution does not give to the government, belong to the states and  the people, excluding the powers that the Constitution says the states cannot have.", 9, "https://en.wikipedia.org/wiki/Tenth_Amendment_to_the_United_States_Constitution"));
+
+        allEvidence[1].add(new Evidence("New York Times v. Sullivan", "The Court held that the First Amendment protects the publication of all statements, even false ones, about the conduct of public officials except when statements are made with actual malice (with knowledge that they are false or in reckless disregard of their truth or falsity).", 9, "https://www.oyez.org/cases/1963/39"));
+        allEvidence[1].add(new Evidence("UC Regents v. Bakke", "Race can be used as part of the criteria for admissions, but the use of quotas is unconstitutional.", 4, "https://www.oyez.org/cases/1979/76-811"));
+        allEvidence[1].add(new Evidence("Roe v. Wade", "The Court held that a woman's right to an abortion fell within the right to privacy protected by the Fourteenth Amendment. The decision gave a woman total autonomy over the pregnancy during the first trimester and defined different levels of state interest for the second and third trimesters. ", 9, "https://www.oyez.org/cases/1971/70-18"));
+        allEvidence[1].add(new Evidence("Texas v. Johnson", "Johnson's burning of a flag was protected expression under the First Amendment. The Court found that Johnson's actions fell into the category of expressive conduct and had a distinctively political nature. The fact that an audience takes offense to certain ideas or expression, the Court found, does not justify prohibitions of speech. ", 3, "https://www.oyez.org/cases/1988/88-155"));
+        allEvidence[1].add(new Evidence("United States v. Santana", "The Court upheld the search. Relying on the the Court's decision in United States v. Watson (1976), Justice Rehnquist argued that by standing on her porch when the officers arrived, Santana was \"not in an area where she had any expectation of privacy.\" Since the police had probable cause to arrest and search her at that point, their behavior was consistent with the Court's Watson precedent.", 11, "https://www.oyez.org/cases/1975/75-19"));
+        allEvidence[1].add(new Evidence("Mapp v. Ohio", "The Court declared that \"all evidence obtained by searches and seizures in violation of the Constitution is, by [the Fourth Amendment], inadmissible in a state court.\" Mapp had been convicted on the basis of illegally obtained evidence. This was an historic -- and controversial -- decision. It placed the requirement of excluding illegally obtained evidence from court at all levels of the government. ", 9, "https://www.oyez.org/cases/1960/236"));
+        //allEvidence[1].add(new Evidence("New York Times Co. v Sullivan", "Hello world", 3, "https://en.wikipedia.org/wiki/New_York_Times_Co._v._Sullivan"));
+        //allEvidence[1].add(new Evidence("Roe v Wade", "desc", 1, "https://en.wikipedia.org/wiki/Roe_v._Wade"));
+    }
+
+    private static void hideEvidence() {
+        main.setVisible(false);
+        column.setVisible(false);
+        evidenceButton.setVisible(true);
+        descriptionLabel.setVisible(false);
+        infoLabel.setVisible(false);
+    }
+
+    public static void showEvidence(boolean canChoose) {
+        main.setVisible(true);
+        column.setVisible(true);
+        evidenceButton.setVisible(false);
+        presentButton.setVisible(canChoose);
+        backButton.setVisible(true);
+        //backButton.setVisible(!canChoose);
+        descriptionLabel.setVisible(true);
+        infoLabel.setVisible(true);
+    }
+
+    private static void updateList() {
+        list.setItems(allEvidence[listTypeIndex]);
+    }
+
+    private static void present(int id) {
+        hideEvidence();
+        conversationController.complete(CompleteEvent.present(id));
+    }
+
+    public static void makeEvidenceGUI() {
+
+        clickSound = GameManager.assetManager().get("click.wav");
+        evidenceButton = new TextButton("Evidence", skin);
+        evidenceButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                event.cancel();
+                showEvidence(false);
+                clickSound.play(2);
+            }
+        });
+        evidenceButton.setX(50);
+        evidenceButton.setY(Gdx.graphics.getHeight() - 50);
+        evidenceButton.setWidth(100);
+        evidenceButton.setHeight(40);
+        stage.addActor(evidenceButton);
+
+
+        evidenceTable = new Table();
+        evidenceTable.setFillParent(true);
+        evidenceTable.setDebug(Constants.DEBUG);
+        stage.addActor(evidenceTable);
+
+        initEvidence();
+        column = new Table(skin);
+        column.setDebug(Constants.DEBUG);
+        main = new Table(skin);
+        main.setDebug(Constants.DEBUG);
+        evidenceTable.top().left().add(column).minWidth(400);
+        evidenceTable.add(main).top().minWidth(400);
+        List.ListStyle style = new List.ListStyle(defaultFont, Color.WHITE, Color.GRAY, skin.newDrawable("white", Color.GRAY));
+        style.background = skin.newDrawable("white", Color.DARK_GRAY);
+        list = new List<>(style);
+        list.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Object o = list.getItems().get(list.getSelectedIndex());
+                currentEvidence = (Evidence) o;
+                if (descriptionLabel != null) {
+                    descriptionLabel.setText("\n" + currentEvidence.description);
+                    descriptionLabel.setHeight(descriptionLabel.getPrefHeight());
+                    descriptionLabel.setY(545 - descriptionLabel.getHeight());
+                    descriptionLabel.invalidate();
+                }
+                if (infoLabel != null) {
+                    infoLabel.setUrl(currentEvidence.info);
+                }
+            }
+        });
+        updateList();
+        //String[] type = new String[] {"BoR", "Rulings"};
+        ImageButton.ImageButtonStyle[] imageButtonStyle = new ImageButton.ImageButtonStyle[3];
+        Drawable d = new TextureRegionDrawable(new TextureRegion(GameManager.assetManager().get("amendmenticon", Texture.class)));
+        imageButtonStyle[0] = new ImageButton.ImageButtonStyle(d, d, d, d, d, d);
+        Drawable d2 = new TextureRegionDrawable(new TextureRegion(GameManager.assetManager().get("courtcaseicon", Texture.class)));
+        imageButtonStyle[2] = new ImageButton.ImageButtonStyle(d2, d2, d2, d2, d2, d2);
+        for (int i = 0; i < 3; i += 1) {
+            if (i == 1) {
+                backButton = new TextButton("Back", skin);
+                backButton.addListener(new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        hideEvidence();
+                        event.cancel();
+                        clickSound.play(2);
+                        if (presentButton.isVisible()) {
+                            present(-1);
+                        }
+                    }
+                });
+                column.left().add(backButton).minWidth(100).minHeight(40);
+                continue;
+            }
+            Button button = new ImageButton(imageButtonStyle[i]);
+            button.setUserObject(i == 0 ? 0 : 1);
+            button.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    listTypeIndex = (int) actor.getUserObject();
+                    updateList();
+                    event.cancel();
+                    clickSound.play(2);
+                }
+            });
+            column.left().add(button).width(64).height(64).pad(30, 10, 10, 10);
+        }
+        column.row();
+        column.add(list).minWidth(120).pad(0, 20, 0, 20).colspan(3);
+        column.row();
+
+        presentButton = new TextButton("Present", skin);
+        presentButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                event.cancel();
+                present(currentEvidence.id);
+            }
+        });
+        main.add(presentButton).minWidth(150).minHeight(40).pad(10, 0, 0, 0).colspan(3);
+        main.row();
+        VisUI.load();
+        infoLabel = new LinkLabel("More Info", currentEvidence.info);
+        infoLabel.toFront();
+        main.add(infoLabel).colspan(3).pad(0, 0, 10, 0);
+        Label.LabelStyle descriptionStyle = new Label.LabelStyle(defaultFont, Color.WHITE);
+        descriptionStyle.background = skin.newDrawable("white", Color.DARK_GRAY);
+        descriptionLabel = new Label("", descriptionStyle);
+        descriptionLabel.setWrap(true);
+        descriptionLabel.setAlignment(Align.topLeft);
+        stage.addActor(descriptionLabel);//.left().colspan(1);
+        descriptionLabel.setX(Gdx.graphics.getWidth() - 400);
+        descriptionLabel.setWidth(390);
+        descriptionLabel.setText("\n" + currentEvidence.description);
+        descriptionLabel.invalidate();
+        descriptionLabel.setHeight(descriptionLabel.getPrefHeight());
+        descriptionLabel.setY(545 - descriptionLabel.getHeight());
+        descriptionLabel.invalidate();
+        descriptionLabel.toBack();
+        descriptionLabel.setVisible(false);
+        main.setVisible(false);
+        column.setVisible(false);
+
+    }
+
+    public static boolean isEvidenceShowing() {
+        return main.isVisible();
+    }
+
 
     private static void addDebug() {
         List.ListStyle listStyle = new List.ListStyle(skin.getFont("default"), Color.GRAY, Color.WHITE, skin.newDrawable("white", Color.LIGHT_GRAY));

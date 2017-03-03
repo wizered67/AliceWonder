@@ -1,5 +1,6 @@
 package com.wizered67.game.conversations.scene;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -32,6 +33,9 @@ public class SceneCharacter extends SceneEntity {
     private String knownName;
     /** The sound to be used when the character is speaking. */
     private String speakingSound;
+
+    Color targetColor = Color.WHITE;
+
     /** The default speaking sound for all characters. */
     public static final String DEFAULT_SPEAKING_SOUND = "talksoundmale.wav";
 
@@ -137,6 +141,15 @@ public class SceneCharacter extends SceneEntity {
             sprite.setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
             //sprite.setBounds(position.x, position.y, currentSprite.getRegionWidth() * scale.x, currentSprite.getRegionHeight() * scale.y);
             sprite.setOrigin(Math.abs(sprite.getWidth()) / 2, 0);
+            if (isSpeaking) {
+                targetColor = Color.WHITE;
+            } else {
+                targetColor = Color.GRAY;
+            }
+            float alpha = sprite.getColor().a;
+            sprite.setAlpha(1); //used to make sure lerping works, reset right after this to correct value
+            sprite.setColor(sprite.getColor().lerp(targetColor, 0.2f));
+            sprite.setAlpha(alpha);
         }
     }
     /** Sets this SceneCharacter's current sprite to the TextureRegion TEXTURE. */

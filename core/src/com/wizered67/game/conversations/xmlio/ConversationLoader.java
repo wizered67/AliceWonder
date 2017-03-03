@@ -48,6 +48,8 @@ public class ConversationLoader {
         classMapping.put("unloadGroup", LoadUnloadCommand.class);
         classMapping.put("text", MessageCommand.class);
         classMapping.put("music", PlayMusicCommand.class);
+        classMapping.put("resumemusic", PlayMusicCommand.class);
+        classMapping.put("pausemusic", PlayMusicCommand.class);
         classMapping.put("sound", PlaySoundCommand.class);
         classMapping.put("fade", ScreenFadeCommand.class);
         classMapping.put("choices", ShowChoicesCommand.class);
@@ -56,6 +58,7 @@ public class ConversationLoader {
         classMapping.put("waitForLoading", WaitForLoadingCommand.class);
         classMapping.put("waitUntil", WaitUntilVariableCommand.class);
         classMapping.put("image", ModifyImageCommandCreator.class);
+        classMapping.put("evidence", EvidenceCommand.class);
     }
 
     /** Returns the Conversation created by parsing the XML file

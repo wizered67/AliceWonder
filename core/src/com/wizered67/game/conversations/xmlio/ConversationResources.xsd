@@ -4,61 +4,99 @@
 	</xs:simpleType>
 	<xs:simpleType name="animationAtlasResource">
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="Edgeworth"/>
+			<xs:enumeration value="Alice"/>
+			<xs:enumeration value="Betty"/>
+			<xs:enumeration value="Wolf"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="animationResource">
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="Edgeworth_Edgeworth"/>
-			<xs:enumeration value="Edgeworth_Static"/>
-			<xs:enumeration value="Edgeworth_Accuse"/>
-			<xs:enumeration value="Edgeworth_Confront"/>
-			<xs:enumeration value="Edgeworth_Point"/>
+			<xs:enumeration value="Alice_mc_normal"/>
+			<xs:enumeration value="Alice_mc_angry"/>
+			<xs:enumeration value="Alice_mc_smug"/>
+			<xs:enumeration value="Alice_mc_talk_normal"/>
+			<xs:enumeration value="Betty_betty_angry"/>
+			<xs:enumeration value="Wolf_Wolf"/>
+			<xs:enumeration value="Betty_betty_sweat"/>
+			<xs:enumeration value="Wolf_Wolf_looking"/>
+			<xs:enumeration value="Betty_betty_smug"/>
+			<xs:enumeration value="Betty_betty_talk"/>
+			<xs:enumeration value="Betty_betty_serious"/>
+			<xs:enumeration value="Alice_mc_sweat"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="textureResource">
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="icon"/>
-			<xs:enumeration value="testbackground.png"/>
-			<xs:enumeration value="icon2"/>
+			<xs:enumeration value="podiums"/>
+			<xs:enumeration value="background"/>
+			<xs:enumeration value="courtcaseicon"/>
+			<xs:enumeration value="amendmenticon"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="musicResource">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value=""/>
-			<xs:enumeration value="discussion.mp3"/>
+			<xs:enumeration value="BettyTheme"/>
+			<xs:enumeration value="victory"/>
+			<xs:enumeration value="cornered"/>
+			<xs:enumeration value="discussion"/>
+			<xs:enumeration value="logic"/>
+			<xs:enumeration value="suspense"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="soundResource">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="talksoundfemale.wav"/>
+			<xs:enumeration value="click.wav"/>
 			<xs:enumeration value="intense.wav"/>
 			<xs:enumeration value="talksoundmale.wav"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="characterType">
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="Librarian"/>
-			<xs:enumeration value="Detective"/>
-			<xs:enumeration value="Buddy"/>
+			<xs:enumeration value="Moderator"/>
+			<xs:enumeration value="Alice"/>
+			<xs:enumeration value="Betty"/>
+			<xs:enumeration value="Distant"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="conversationType">
 		<xs:restriction base="xs:string">
+			<xs:enumeration value="case1.conv"/>
+			<xs:enumeration value="two.conv"/>
+			<xs:enumeration value="case2foreign1.conv"/>
+			<xs:enumeration value="conclusion.conv"/>
 			<xs:enumeration value="demonstration.conv"/>
+			<xs:enumeration value="caseEducation.conv"/>
+			<xs:enumeration value="domestic.conv"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="resourceType">
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="Edgeworth"/>
-			<xs:enumeration value="icon"/>
-			<xs:enumeration value="talksoundfemale.wav"/>
-			<xs:enumeration value="discussion.mp3"/>
-			<xs:enumeration value="demonstration.conv"/>
-			<xs:enumeration value="testbackground.png"/>
+			<xs:enumeration value="podiums"/>
+			<xs:enumeration value="case1.conv"/>
+			<xs:enumeration value="Alice"/>
+			<xs:enumeration value="BettyTheme"/>
+			<xs:enumeration value="Betty"/>
+			<xs:enumeration value="victory"/>
+			<xs:enumeration value="click.wav"/>
+			<xs:enumeration value="courtcaseicon"/>
+			<xs:enumeration value="case2foreign1.conv"/>
+			<xs:enumeration value="conclusion.conv"/>
+			<xs:enumeration value="discussion"/>
+			<xs:enumeration value="amendmenticon"/>
+			<xs:enumeration value="suspense"/>
 			<xs:enumeration value="intense.wav"/>
-			<xs:enumeration value="icon2"/>
+			<xs:enumeration value="caseEducation.conv"/>
+			<xs:enumeration value="domestic.conv"/>
 			<xs:enumeration value="talksoundmale.wav"/>
+			<xs:enumeration value="background"/>
+			<xs:enumeration value="talksoundfemale.wav"/>
+			<xs:enumeration value="two.conv"/>
+			<xs:enumeration value="cornered"/>
+			<xs:enumeration value="Wolf"/>
+			<xs:enumeration value="logic"/>
+			<xs:enumeration value="demonstration.conv"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="resourceGroupType">

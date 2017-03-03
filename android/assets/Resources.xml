@@ -1,49 +1,83 @@
 <resources xmlns="urn:resourceXml" strict="true" dest="../../core/src/com/wizered67/game/conversations/xmlio/ConversationResources.xsd">
     <animation_files>
-        Edgeworth "Edgeworth.pack"
+        Betty "betty.pack"
+        Alice "alice.pack"
+        Wolf "wolf.pack"
     </animation_files>
 
     <animations>
-        <animation id="Edgeworth_Static" frameDuration="1" playMode="NORMAL"/>
-        <animation id="Edgeworth_Accuse" frameDuration="0.05"/>
-        <animation id="Edgeworth_Confront" frameDuration="1"/>
-        <animation id="Edgeworth_Edgeworth" frameDuration="0.3"/>
-        <animation id="Edgeworth_Point" frameDuration="0.2"/>
+        <animation id="Betty_betty_angry" frameDuration="1"/>
+        <animation id="Betty_betty_serious" frameDuration="1"/>
+        <animation id="Betty_betty_smug" frameDuration="1"/>
+        <animation id="Betty_betty_sweat" frameDuration="1"/>
+        <animation id="Betty_betty_talk" frameDuration="1"/>
+
+        <animation id="Alice_mc_angry" frameDuration="1"/>
+        <animation id="Alice_mc_normal" frameDuration="1"/>
+        <animation id="Alice_mc_smug" frameDuration="1"/>
+        <animation id="Alice_mc_sweat" frameDuration="1"/>
+        <animation id="Alice_mc_talk_normal" frameDuration="1"/>
+
+        <animation id="Wolf_Wolf" frameDuration="1"/>
+        <animation id="Wolf_Wolf_looking" frameDuration="1"/>
+
     </animations>
 
     <textures>
-        icon "testicon.png"
-        "testbackground.png"
-        icon2 "testicon2.png"
+        amendmenticon "amendmenticon.png"
+        background "background.png"
+        courtcaseicon "courtcaseicon.png"
+        podiums "foreground.png"
     </textures>
 
     <music>
-        "discussion.mp3"
+        cornered "cornered.mp3"
+        discussion "discussion.mp3"
+        BettyTheme "enemytheme.mp3"
+        logic "logic.mp3"
+        suspense "suspense.mp3"
+        victory "victory.mp3"
     </music>
 
     <sounds>
         "intense.wav"
         "talksoundfemale.wav"
         "talksoundmale.wav"
+        "click.wav"
     </sounds>
 
     <characters>
-        <character id="Detective" name="Detective" sound="talksoundmale.wav"/>
-        <character id="Librarian" name="???" sound="talksoundmale.wav"/>
-        <character id="Buddy" name="YOLO SWAGGINS"  sound="talksoundmale.wav"/>
+        <character id="Alice" name="???" sound="talksoundfemale.wav"/>
+        <character id="Betty" name="Betty Blue" sound="talksoundfemale.wav"/>
+        <character id="Moderator" name="Wolf Blitzer" sound="talksoundmale.wav"/>
+        <character id="Distant" name="Distant Voice" sound="talksoundfemale.wav"/>
     </characters>
 
     <groups>
         <group name="common">
-            <load>testbackground.png</load>
-            <load>Edgeworth</load>
-            <load>icon</load>
-            <load>icon2</load>
-            <load>discussion.mp3</load>
+            <load>Alice</load>
+            <load>Betty</load>
+            <load>Wolf</load>
+            <load>amendmenticon</load>
+            <load>courtcaseicon</load>
+            <load>background</load>
+            <load>podiums</load>
+            <load>click.wav</load>
             <load>intense.wav</load>
-            <load>talksoundmale.wav</load>
             <load>talksoundfemale.wav</load>
-            <load>demonstration.conv</load>
+            <load>talksoundmale.wav</load>
+            <load>discussion</load>
+            <load>suspense</load>
+            <load>cornered</load>
+            <load>BettyTheme</load>
+            <load>logic</load>
+            <load>victory</load>
+            <load>case1.conv</load>
+            <load>case2foreign1.conv</load>
+            <load>caseEducation.conv</load>
+            <load>conclusion.conv</load>
+            <load>domestic.conv</load>
+            <load>two.conv</load>
         </group>
     </groups>
 </resources>

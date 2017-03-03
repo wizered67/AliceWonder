@@ -72,6 +72,10 @@ public class ConversationController implements Controllable {
     /** Whether the conversation controller is paused. When paused, commands don't update. The scene will render but not update. */
     private boolean paused;
 
+    public boolean isChoiceShowing() {
+        return choiceShowing;
+    }
+
     public ConversationController() {
         initScriptManagers();
     }
@@ -323,7 +327,15 @@ public class ConversationController implements Controllable {
     }
     /** Sets the current speaking character to the one represented by CHARACTER. */
     public void setSpeaker(SceneCharacter character) {
+        if (currentSpeaker != null) {
+            currentSpeaker.setSpeaking(false);
+            //System.out.println(currentSpeaker.getKnownName() + " is no longer speaking.");
+        }
         currentSpeaker = character;
+        if (character != null) {
+            currentSpeaker.setSpeaking(true);
+            //System.out.println(character.getKnownName() + " is now speaking.");
+        }
     }
     /** Updates the speakerLabel to TEXT. */
     private void setSpeakerName(String text){
@@ -365,7 +377,7 @@ public class ConversationController implements Controllable {
     }
     /** Sets choice number CHOICE to CHOICE NAME. */
     public void setChoice(int choice, String choiceName) {
-        choiceButtons[choice].setVisible(!choiceName.isEmpty());
+        choiceButtons[choice].setVisible(!choiceName.isEmpty() && !GUIManager.isEvidenceShowing());
         choiceButtons[choice].setText(choiceName);
         choiceButtons[choice].setProgrammaticChangeEvents(false);
         choiceButtons[choice].setChecked(false);
@@ -400,6 +412,9 @@ public class ConversationController implements Controllable {
      * and fire an input CompleteEvent.
      */
     private void inputConfirm() {
+        if (GUIManager.isEvidenceShowing() || GUIManager.isTranscriptVisible()) {
+            return;
+        }
         if (choiceShowing) {
             if (choiceHighlighted != -1) {
                 choiceButtons[choiceHighlighted].setProgrammaticChangeEvents(false);

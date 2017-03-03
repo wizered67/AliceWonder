@@ -42,8 +42,9 @@ public class MainGame extends Game {
 			@Override
 			public void finishLoading() {
 				GameManager.game.setScreen(gameScreen);
-				GUIManager.conversationController().setConv(GameManager.assetManager().getConversation("demonstration.conv"));
+				GUIManager.conversationController().setConv(GameManager.assetManager().getConversation("case1.conv"));
 				GUIManager.conversationController().setBranch("default");
+				GUIManager.makeEvidenceGUI();
 			}
 		}));
 	}
